@@ -70,5 +70,9 @@ public class Ventana extends JFrame{
         this.setContentPane(pnlTerminar);
         this.getContentPane().setVisible(true);
     }
+
+    public void mostrarJoptionPane(String msg){
+        JOptionPane.showMessageDialog(null, msg);
+    }
     
 }

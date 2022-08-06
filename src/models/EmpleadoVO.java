@@ -1,58 +1,36 @@
 package models;
 
 public class EmpleadoVO {
-    private String idEmpleado;
-    private String idtienda;
-    private String nombre;
-    private String cedula;
-    private String telefono;
-    private String direccion;
-    private String correo;
-    private double salario;
-    
+    private String codEmple;
+    private String nombreApell;
+    private String cargo;
 
-    public EmpleadoVO(String idEmpleado, String idtienda, String nombre, String cedula, String telefono, String direccion, String correo,
-            double salario) {
-        this.idEmpleado = idEmpleado;
-        this.nombre = nombre;
-        this.cedula = cedula;
-        this.telefono = telefono;
-        this.direccion = direccion;
-        this.correo = correo;
-        this.salario = salario;
-        this.idtienda = idtienda;
+    public EmpleadoVO() {
+        
     }
 
-    public String getIdEmpleado() {
-        return idEmpleado;
+    public String getCodEmple() {
+        return codEmple;
     }
 
-    public String getNombre() {
-        return nombre;
+    public void setCodEmple(String codEmple) {
+        this.codEmple = codEmple;
     }
 
-    public String getCedula() {
-        return cedula;
+    public String getNombreApell() {
+        return nombreApell;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public void setNombreApell(String nombreApell) {
+        this.nombreApell = nombreApell;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public String getCargo() {
+        return cargo;
     }
 
-    public String getCorreo() {
-        return correo;
-    }
-
-    public double getSalario() {
-        return salario;
-    }
-
-    public String getIdTienda() {
-        return idtienda;
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
     }
 
 }

@@ -207,4 +207,6 @@ public class Ensamble extends JPanel {
         tblDetallEnsam.setModel(model);
     }
 
+    
+
 }

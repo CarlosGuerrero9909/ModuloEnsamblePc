@@ -1,12 +1,19 @@
 package control.logica;
 
+import control.dao.ClienteDAO;
 import control.dao.EmpleadoDAO;
+import models.ClienteVO;
+import models.EmpleadoVO;
 import vista.Ventana;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
 
 public class Controlador implements ActionListener{
     private EmpleadoDAO empDao;
+    private ClienteDAO clienteDao;
     private Ventana vtn;
 
     public Controlador(){
@@ -15,18 +22,35 @@ public class Controlador implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if(e.getActionCommand().equals("Registrar")){
-            vtn.renderConsulta();
-            vtn.getPnlReg().limpiarCampo();
-            System.out.println("Aca va la logica de registro del empleado");
+            String codEmplea = vtn.getPnlReg().getTxfCodEmp().getText();
+            if(validarEmpleado(codEmplea)){
+                vtn.renderConsulta();
+                vtn.getPnlReg().limpiarCampo();
+            }else{
+                vtn.mostrarJoptionPane("Empleado NO Registrado");
+                vtn.getPnlReg().limpiarCampo();
+            }
+            
         }
+
         if(e.getActionCommand().equals("Consultar")){
-            vtn.renderEnsamble();
-            vtn.getPnlCon().limpiarCampo();
-            System.out.println("Aca va la logica de consulta del cliente");    
+            String cedCliente = vtn.getPnlCon().getTxfCedClie().getText();
+            String nombreCliente = validarCliente(cedCliente);
+
+            if(nombreCliente.equals("")){
+                vtn.mostrarJoptionPane("El cliente no se encuentra registrado");
+                vtn.getPnlCon().limpiarCampo();
+            }else{
+                vtn.mostrarJoptionPane("Cliente registrado: " + nombreCliente);
+                vtn.getPnlCon().limpiarCampo();
+                vtn.renderEnsamble();
+            }
         }
+
         if(e.getActionCommand().equals("TipoDetalleSelecc")){
-            System.out.println("TipoDetalleSelecc");    
+            System.out.println("TipoDetalleSelecc");  
         }
         if(e.getActionCommand().equals("ConsultarEnsamble")){
             System.out.println("ConsultarEnsamble");   
@@ -50,6 +74,32 @@ public class Controlador implements ActionListener{
         }
         
     }
+
+    public boolean validarEmpleado(String codEmplea){
+        empDao = new EmpleadoDAO();
+        ArrayList<EmpleadoVO> empleadosAux = empDao.obtenerEmpleadosAux();
+
+        for (EmpleadoVO empleAux : empleadosAux) {
+            if(empleAux.getCodEmple().equals(codEmplea)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String validarCliente(String cedula){
+        clienteDao = new ClienteDAO();
+        ArrayList<ClienteVO> clientes = clienteDao.obtenerClientes();
+
+        for (ClienteVO cliente : clientes) {
+            if(cliente.getCedula().equals(cedula)){
+                return cliente.getNombreApell();
+            }
+        }
+        return "";
+    }
+
+
 
     public EmpleadoDAO getEmpDao() {
         return empDao;
