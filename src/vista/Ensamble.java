@@ -225,7 +225,16 @@ public class Ensamble extends JPanel {
         DefaultTableModel model = new DefaultTableModel(data, columns);
         tblDetallEnsam.setModel(model);
     }
+    public Double calcularFactura(){
+        Double total = 0.0;
+        for (int i = 0; i < tblDetallEnsam.getRowCount(); i++) {
+            total += Double.parseDouble(tblDetallEnsam.getValueAt(i, 4).toString());
+        }
+        return total;
+    }
 
-    
+    public Double calcIVA(Double total){
+        return (Double) (total*0.16);
+    }
 
 }

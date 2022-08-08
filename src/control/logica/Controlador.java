@@ -99,7 +99,7 @@ public class Controlador implements ActionListener{
             vtn.renderConsulta();
         }
         if(e.getActionCommand().equals("Terminar")){
-            vtn.renderTerminar();
+            vtn.mostrarJoptionPane(crearMensaje());
         }
         if(e.getActionCommand().equals("Aceptar")){
             System.out.println("Aceptar");   
@@ -146,6 +146,18 @@ public class Controlador implements ActionListener{
 
     public Ventana getVtn() {
         return vtn;
+    }
+
+    public String crearMensaje(){
+        Double valFactura = vtn.getPnlEnsamble().calcularFactura();
+        Double valIva = vtn.getPnlEnsamble().calcIVA(valFactura);
+        Double valTotal = valFactura + valIva;
+
+        String mensaje = "Valor Factura: "+valFactura+"\n"
+                + "Valor IVA: "+valIva+"\n"
+                + "Valor Total: "+valTotal+"\n"
+                + "¿Desea continuar?";
+        return mensaje;
     }
     
 }
