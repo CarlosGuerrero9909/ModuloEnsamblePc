@@ -2,8 +2,12 @@ package control.logica;
 
 import control.dao.ClienteDAO;
 import control.dao.EmpleadoDAO;
+import control.dao.EnsambleDAO;
+import control.dao.TipoDetalleDAO;
 import models.ClienteVO;
 import models.EmpleadoVO;
+import models.Ensamble;
+import models.TipoDetalle;
 import vista.Ventana;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,12 +49,37 @@ public class Controlador implements ActionListener{
             }else{
                 vtn.mostrarJoptionPane("Cliente registrado: " + nombreCliente);
                 vtn.getPnlCon().limpiarCampo();
+                try {
+                    TipoDetalleDAO tipoDetalleDao = new TipoDetalleDAO();
+                    ArrayList<TipoDetalle> listaTipoDetalle = tipoDetalleDao.getTipoDetalle();
+                    vtn.getPnlEnsamble().getCbxTipoDetalle().removeAllItems();
+                    for (TipoDetalle tipoDetalle : listaTipoDetalle) {
+                        vtn.getPnlEnsamble().getCbxTipoDetalle().addItem(tipoDetalle.getDescTipoDetalle());
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Error al cargar el combo");
+                }
                 vtn.renderEnsamble();
+                
             }
         }
 
         if(e.getActionCommand().equals("TipoDetalleSelecc")){
-            System.out.println("TipoDetalleSelecc");  
+            try {
+                if(((String)vtn.getPnlEnsamble().getCbxTipoDetalle().getSelectedItem()).equals("Ensamble")){
+                    vtn.getPnlEnsamble().getCbxEnsamNoFact().removeAllItems();
+                    EnsambleDAO ensambleDao = new EnsambleDAO();
+                    ArrayList<Ensamble> listaEnsamble = ensambleDao.getEnsambleNoFacturado();
+                    for (Ensamble ensamble : listaEnsamble) {
+                        vtn.getPnlEnsamble().getCbxEnsamNoFact().addItem(ensamble.getConsecc());
+                    }
+                }else{
+                    System.out.println("No entro");
+                }
+            } catch (Exception exe) {
+                System.out.println("Error al cargar el combo"+exe.getMessage());
+            }
+
         }
         if(e.getActionCommand().equals("ConsultarEnsamble")){
             System.out.println("ConsultarEnsamble");   
