@@ -4,7 +4,11 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import models.ItemEnsamble;
+
 import java.awt.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 public class Ensamble extends JPanel {
@@ -203,6 +207,21 @@ public class Ensamble extends JPanel {
                 { "", "", "", "", "" } };
         String columns[] = { "item", "tipoDetalle", "refProduc", "cantidad", "precio" };
 
+        DefaultTableModel model = new DefaultTableModel(data, columns);
+        tblDetallEnsam.setModel(model);
+    }
+
+    public void setTabla(ArrayList<ItemEnsamble> item){
+        String data[][] = new String[item.size()][5];
+        String columns[] = { "item", "tipoDetalle", "refProduc", "cantidad", "precio" };
+        for (int i = 0; i < item.size(); i++) {
+            data[i][0] = item.get(i).getIdItemEnsamble()+"";
+            data[i][1] = item.get(i).getDescTipoElemen()+"";
+            data[i][2] = item.get(i).getObsRefencia()+"";
+            data[i][3] = 1+"";
+            data[i][4] = item.get(i).getValor()+"";
+            //de.itemensamble, i.valor, re.obsref, tc.desctipocarac,rc. valorrefcara, te.destipoelemen
+        }
         DefaultTableModel model = new DefaultTableModel(data, columns);
         tblDetallEnsam.setModel(model);
     }

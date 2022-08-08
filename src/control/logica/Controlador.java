@@ -3,10 +3,12 @@ package control.logica;
 import control.dao.ClienteDAO;
 import control.dao.EmpleadoDAO;
 import control.dao.EnsambleDAO;
+import control.dao.ItemEnsambleDao;
 import control.dao.TipoDetalleDAO;
 import models.ClienteVO;
 import models.EmpleadoVO;
 import models.Ensamble;
+import models.ItemEnsamble;
 import models.TipoDetalle;
 import vista.Ventana;
 import java.awt.event.ActionEvent;
@@ -77,12 +79,20 @@ public class Controlador implements ActionListener{
                     System.out.println("No entro");
                 }
             } catch (Exception exe) {
-                System.out.println("Error al cargar el combo"+exe.getMessage());
+                System.out.println("Error al cargar el combo: "+exe.getMessage());
             }
 
         }
         if(e.getActionCommand().equals("ConsultarEnsamble")){
-            System.out.println("ConsultarEnsamble");   
+            try {
+                int EnsambleSelec = ((Integer)vtn.getPnlEnsamble().getCbxEnsamNoFact().getSelectedItem());
+                ItemEnsambleDao itemEnsambleDao = new ItemEnsambleDao();
+                ArrayList<ItemEnsamble> listaEnsamble = itemEnsambleDao.getItemEnsamble(EnsambleSelec);
+                vtn.getPnlEnsamble().limpiarTabla();
+                vtn.getPnlEnsamble().setTabla(listaEnsamble);
+            } catch (Exception ex) {
+                System.out.println("Error al consultar los detalles del ensamble: "+ex.getMessage());
+            }
         }
         if(e.getActionCommand().equals("VolverConsultaCli")){
             vtn.getPnlEnsamble().limpiarTabla();
