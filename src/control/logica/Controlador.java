@@ -15,7 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
 
 public class Controlador implements ActionListener{
     private EmpleadoDAO empDao;
@@ -99,7 +98,13 @@ public class Controlador implements ActionListener{
             vtn.renderConsulta();
         }
         if(e.getActionCommand().equals("Terminar")){
-            vtn.mostrarJoptionPane(crearMensaje());
+            Double valFactura = calcularFactura();
+            Double valIva = calcIVA(valFactura);
+            Double valTotal = valFactura + valIva;
+            vtn.renderTerminar();
+            vtn.getPnlTerminar().getTxfTotalProSer().setText(valFactura.toString());
+            vtn.getPnlTerminar().getTxfIva().setText(valIva.toString());
+            vtn.getPnlTerminar().getTxfTotalFact().setText(valTotal.toString());
         }
         if(e.getActionCommand().equals("Aceptar")){
             System.out.println("Aceptar");   
@@ -138,7 +143,17 @@ public class Controlador implements ActionListener{
         return "";
     }
 
+    public Double calcularFactura(){
+        Double total = 0.0;
+        for (int i = 0; i < vtn.getPnlEnsamble().getTblDetallEnsam().getRowCount(); i++) {
+            total += Double.parseDouble(vtn.getPnlEnsamble().getTblDetallEnsam().getValueAt(i, 4).toString());
+        }
+        return total;
+    }
 
+    public Double calcIVA(Double total){
+        return (Double) (total*0.16);
+    }
 
     public EmpleadoDAO getEmpDao() {
         return empDao;
@@ -146,18 +161,6 @@ public class Controlador implements ActionListener{
 
     public Ventana getVtn() {
         return vtn;
-    }
-
-    public String crearMensaje(){
-        Double valFactura = vtn.getPnlEnsamble().calcularFactura();
-        Double valIva = vtn.getPnlEnsamble().calcIVA(valFactura);
-        Double valTotal = valFactura + valIva;
-
-        String mensaje = "Valor Factura: "+valFactura+"\n"
-                + "Valor IVA: "+valIva+"\n"
-                + "Valor Total: "+valTotal+"\n"
-                + "¿Desea continuar?";
-        return mensaje;
     }
     
 }
