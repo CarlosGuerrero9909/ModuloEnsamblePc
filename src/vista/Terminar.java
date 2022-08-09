@@ -32,6 +32,7 @@ public class Terminar extends JPanel{
 
         txfTotalProSer = new JTextField();
         txfTotalProSer.setPreferredSize(new Dimension(180, 30));
+        txfTotalProSer.setEditable(false);
         txfTotalProSer.setFont(new Font("SansSerif", 0, 16));
         gbc = new GridBagConstraints(0, 1, 2, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE,
                 new Insets(5, 5, 5, 5), 0, 0);
@@ -46,6 +47,7 @@ public class Terminar extends JPanel{
 
         txfIva = new JTextField();
         txfIva.setPreferredSize(new Dimension(180, 30));
+        txfIva.setEditable(false);
         txfIva.setFont(new Font("SansSerif", 0, 16));
         gbc = new GridBagConstraints(0, 3, 2, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE,
                 new Insets(5, 5, 5, 5), 0, 0);
@@ -60,6 +62,7 @@ public class Terminar extends JPanel{
 
         txfTotalFact = new JTextField();
         txfTotalFact.setPreferredSize(new Dimension(180, 30));
+        txfTotalFact.setEditable(false);
         txfTotalFact.setFont(new Font("SansSerif", 0, 16));
         gbc = new GridBagConstraints(0, 5, 2, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE,
                 new Insets(5, 5, 5, 5), 0, 0);
