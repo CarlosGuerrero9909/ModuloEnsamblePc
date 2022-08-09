@@ -209,7 +209,7 @@ create table FACTURA (
    IDTIPOFACTURAFK      VARCHAR(2)           not null,
    CODEMPLEADOFK        VARCHAR(3)           not null,
    FECHAFACTURA         DATE                 not null,
-   VALORFACTURA         NUMERIC(11,2)        null,
+   VALORFACTURA         NUMERIC(110,11)        null,
    constraint PK_FACTURA primary key (NFACTURA)
 );
 

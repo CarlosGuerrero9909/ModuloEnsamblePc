@@ -22,7 +22,7 @@ public class ClienteDAO {
 
     public ArrayList<ClienteVO> obtenerClientes(){
 		ArrayList<ClienteVO> clientes = new ArrayList<ClienteVO>();
-		String consulta = "select p.idpersona cod_cliente, p.nompersona||' '||p.apellpersona cliente, p.idenpersona cedula\n"+
+		String consulta = "select p.idtipopersonafk, p.idpersona cod_cliente, p.nompersona||' '||p.apellpersona cliente, p.idenpersona cedula\n"+
 			"from persona p, tipoidentificacion ti, tipopersona tp\n"+
 			"where tp.idtipopersona = p.idtipopersonafk and\n"+ 
 				"ti.tipoidenti = p.tipoidentifk;";
@@ -34,6 +34,7 @@ public class ClienteDAO {
 				ClienteVO cliente = new ClienteVO();
 				cliente.setCodCliente(rs.getString("cod_cliente"));
 				cliente.setNombreApell(rs.getString("cliente"));
+				cliente.setIdTipoPersonaFk(rs.getString("idtipopersonafk"));
 				cliente.setCedula(rs.getString("cedula"));
 				clientes.add(cliente);
 			}

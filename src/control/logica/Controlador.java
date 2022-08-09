@@ -122,12 +122,17 @@ public class Controlador implements ActionListener{
             //se crea nueva factura
             Factura factura = new Factura();
             factura.setnFactura(ultimaFactura+1);
-            factura.setIdFormaPagoFk("4");
+            System.out.println("Ultima factura: "+(ultimaFactura+1));
+            factura.setIdFormaPagoFk("4");  
             factura.setIdTipoPersonaFk(idTipoPersona);
+            System.out.println("idTipoPersona: "+idTipoPersona);
             factura.setIdPersonaFk(idPersonaFk);
+            System.out.println("idPersonaFk: "+idPersonaFk);
             factura.setIdTipoFacturaFk("1");
             factura.setCodEmpleadoFk(codEmpleado);
+            System.out.println("codEmpleado: "+codEmpleado);
             factura.setFechaFactura(fechaActual());
+            System.out.println("fechaFactura: "+fechaActual());
             factura.setValorFactura(valTotal);
 
             facturaDao.insertarFactura(factura);
