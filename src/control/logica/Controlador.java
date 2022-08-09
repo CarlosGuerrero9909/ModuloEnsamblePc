@@ -99,7 +99,8 @@ public class Controlador implements ActionListener{
             vtn.renderConsulta();
         }
         if(e.getActionCommand().equals("Terminar")){
-            vtn.mostrarJoptionPane(crearMensaje());
+            //vtn.mostrarJoptionPane(crearMensaje());
+            vtn.renderTerminar();
         }
         if(e.getActionCommand().equals("Aceptar")){
             System.out.println("Aceptar");   
