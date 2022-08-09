@@ -30,6 +30,7 @@ public class Controlador implements ActionListener{
     private String idPersonaFk;
     private String codEmpleado;
     private Double valTotal;
+    private int nuevoIdFactura;
 
     public Controlador(){
         this.vtn = new Ventana(this);
@@ -117,25 +118,7 @@ public class Controlador implements ActionListener{
             vtn.getPnlTerminar().getTxfTotalFact().setText(valTotal.toString());
         }
         if(e.getActionCommand().equals("Aceptar")){
-            FacturaDAO facturaDao = new FacturaDAO();
-            int ultimaFactura = facturaDao.obtenerUltimaFactura();
-            //se crea nueva factura
-            Factura factura = new Factura();
-            factura.setnFactura(ultimaFactura+1);
-            System.out.println("Ultima factura: "+(ultimaFactura+1));
-            factura.setIdFormaPagoFk("4");  
-            factura.setIdTipoPersonaFk(idTipoPersona);
-            System.out.println("idTipoPersona: "+idTipoPersona);
-            factura.setIdPersonaFk(idPersonaFk);
-            System.out.println("idPersonaFk: "+idPersonaFk);
-            factura.setIdTipoFacturaFk("1");
-            factura.setCodEmpleadoFk(codEmpleado);
-            System.out.println("codEmpleado: "+codEmpleado);
-            factura.setFechaFactura(fechaActual());
-            System.out.println("fechaFactura: "+fechaActual());
-            factura.setValorFactura(valTotal);
-
-            facturaDao.insertarFactura(factura);
+            GenerarFactura();
 
             System.out.println("Aceptar Final");   
         }
@@ -205,4 +188,25 @@ public class Controlador implements ActionListener{
         return vtn;
     }
     
+    public void GenerarFactura(){
+        FacturaDAO facturaDao = new FacturaDAO();
+        int ultimaFactura = facturaDao.obtenerUltimaFactura();
+        nuevoIdFactura = ultimaFactura + 1;
+        //se crea nueva factura
+        Factura factura = new Factura();
+        factura.setnFactura(nuevoIdFactura);
+        factura.setIdFormaPagoFk("4");  
+        factura.setIdTipoPersonaFk(idTipoPersona);
+        factura.setIdPersonaFk(idPersonaFk);
+        factura.setIdTipoFacturaFk("1");
+        factura.setCodEmpleadoFk(codEmpleado);
+        factura.setFechaFactura(fechaActual());
+        factura.setValorFactura(valTotal);
+
+        facturaDao.insertarFactura(factura);
+    }
+
+    public void InsertarDetallesFactura(){
+        
+    }
 }
