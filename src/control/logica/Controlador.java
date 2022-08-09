@@ -3,23 +3,33 @@ package control.logica;
 import control.dao.ClienteDAO;
 import control.dao.EmpleadoDAO;
 import control.dao.EnsambleDAO;
+import control.dao.FacturaDAO;
 import control.dao.ItemEnsambleDao;
 import control.dao.TipoDetalleDAO;
 import models.ClienteVO;
 import models.EmpleadoVO;
 import models.Ensamble;
+import models.Factura;
 import models.ItemEnsamble;
 import models.TipoDetalle;
 import vista.Ventana;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 
 
 public class Controlador implements ActionListener{
     private EmpleadoDAO empDao;
     private ClienteDAO clienteDao;
     private Ventana vtn;
+    private String idTipoPersona;
+    private String idPersonaFk;
+    private String codEmpleado;
+    private Double valTotal;
 
     public Controlador(){
         this.vtn = new Ventana(this);
@@ -100,14 +110,29 @@ public class Controlador implements ActionListener{
         if(e.getActionCommand().equals("Terminar")){
             Double valFactura = calcularFactura();
             Double valIva = calcIVA(valFactura);
-            Double valTotal = valFactura + valIva;
+            valTotal = valFactura + valIva;
             vtn.renderTerminar();
             vtn.getPnlTerminar().getTxfTotalProSer().setText(valFactura.toString());
             vtn.getPnlTerminar().getTxfIva().setText(valIva.toString());
             vtn.getPnlTerminar().getTxfTotalFact().setText(valTotal.toString());
         }
         if(e.getActionCommand().equals("Aceptar")){
-            System.out.println("Aceptar");   
+            FacturaDAO facturaDao = new FacturaDAO();
+            int ultimaFactura = facturaDao.obtenerUltimaFactura();
+            //se crea nueva factura
+            Factura factura = new Factura();
+            factura.setnFactura(ultimaFactura+1);
+            factura.setIdFormaPagoFk("4");
+            factura.setIdTipoPersonaFk(idTipoPersona);
+            factura.setIdPersonaFk(idPersonaFk);
+            factura.setIdTipoFacturaFk("1");
+            factura.setCodEmpleadoFk(codEmpleado);
+            factura.setFechaFactura(fechaActual());
+            factura.setValorFactura(valTotal);
+
+            facturaDao.insertarFactura(factura);
+
+            System.out.println("Aceptar Final");   
         }
         if(e.getActionCommand().equals("VolverEnsamble")){
             vtn.renderEnsamble();
@@ -119,12 +144,22 @@ public class Controlador implements ActionListener{
         
     }
 
+    //se genera fecha actual
+    public Date fechaActual(){
+
+        java.util.Date fechaActual= new java.util.Date(System.currentTimeMillis());
+        java.sql.Date fechaSql= java.sql.Date.valueOf(fechaActual.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+        return fechaSql;
+    }
+
     public boolean validarEmpleado(String codEmplea){
         empDao = new EmpleadoDAO();
         ArrayList<EmpleadoVO> empleadosAux = empDao.obtenerEmpleadosAux();
 
         for (EmpleadoVO empleAux : empleadosAux) {
             if(empleAux.getCodEmple().equals(codEmplea)){
+                codEmpleado = empleAux.getCodEmple();
                 return true;
             }
         }
@@ -137,6 +172,8 @@ public class Controlador implements ActionListener{
 
         for (ClienteVO cliente : clientes) {
             if(cliente.getCedula().equals(cedula)){
+                idTipoPersona = cliente.getIdTipoPersonaFk();
+                idPersonaFk = cliente.getCodCliente();
                 return cliente.getNombreApell();
             }
         }

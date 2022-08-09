@@ -4,11 +4,12 @@ public class ClienteVO {
     private String codCliente;
     private String nombreApell;
     private String cedula;
+    private String idTipoPersonaFk;
     
     public ClienteVO() {
 
     }
-
+    
     public String getCodCliente() {
         return codCliente;
     }
@@ -33,7 +34,12 @@ public class ClienteVO {
         this.cedula = cedula;
     } 
 
-    
-    
+    public String getIdTipoPersonaFk() {
+        return idTipoPersonaFk;
+    }
+
+    public void setIdTipoPersonaFk(String idTipoPersonaFk) {
+        this.idTipoPersonaFk = idTipoPersonaFk;
+    }   
     
 }
