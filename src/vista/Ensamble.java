@@ -226,4 +226,8 @@ public class Ensamble extends JPanel {
         tblDetallEnsam.setModel(model);
     }
 
+    public Boolean isTableEmpty() {
+        return tblDetallEnsam.getModel().getRowCount() == 0;
+    }
+
 }

@@ -31,7 +31,7 @@ public class Controlador implements ActionListener{
     private String idTipoPersona;
     private String idPersonaFk;
     private String codEmpleado;
-    private Double valTotal;
+    private Double valTotal = 0.0;
     private int nuevoIdFactura;
     private ArrayList<ItemEnsamble> listaEnsamble;
     private int EnsambleSelec;
@@ -76,7 +76,7 @@ public class Controlador implements ActionListener{
                     System.out.println("Error al cargar el combo");
                 }
                 vtn.renderEnsamble();
-                
+                vtn.getPnlEnsamble().limpiarTabla();
             }
         }
 
@@ -90,7 +90,8 @@ public class Controlador implements ActionListener{
                         vtn.getPnlEnsamble().getCbxEnsamNoFact().addItem(ensamble.getConsecc());
                     }
                 }else{
-                    System.out.println("No entro");
+                    vtn.getPnlEnsamble().getCbxEnsamNoFact().removeAllItems();
+                    vtn.getPnlEnsamble().limpiarTabla();
                 }
             } catch (Exception exe) {
                 System.out.println("Error al cargar el combo: "+exe.getMessage());
@@ -113,24 +114,29 @@ public class Controlador implements ActionListener{
             vtn.renderConsulta();
         }
         if(e.getActionCommand().equals("Terminar")){
-            Double valFactura = calcularFactura();
-            Double valIva = calcIVA(valFactura);
-            valTotal = valFactura + valIva;
-            vtn.renderTerminar();
-            vtn.getPnlTerminar().getTxfTotalProSer().setText(valFactura.toString());
-            vtn.getPnlTerminar().getTxfIva().setText(valIva.toString());
-            vtn.getPnlTerminar().getTxfTotalFact().setText(valTotal.toString());
+            if(vtn.getPnlEnsamble().isTableEmpty()){
+                vtn.mostrarJoptionPane("Se ha seleccionado ensamble");
+            }else{
+                MostrarValor();
+            }
         }
         if(e.getActionCommand().equals("Aceptar")){
-            GenerarFactura();
-            InsertarDetallesFactura();
-            //actualizar ensamble
-            EnsambleDAO ensambleDao = new EnsambleDAO();
-            ensambleDao.actualizarEstadoEnsamble(EnsambleSelec);
-
-            GenerarRegistrosSoporte();
-            vtn.renderPnlReg();
-            System.out.println("Aceptar Final");   
+            if(vtn.getPnlEnsamble().isTableEmpty()){
+                vtn.mostrarJoptionPane("Se ha seleccionado ensamble");
+            }else{
+                if(valTotal == 0.0){
+                    MostrarValor();
+                }
+                GenerarFactura();
+                InsertarDetallesFactura();
+                //actualizar ensamble
+                EnsambleDAO ensambleDao = new EnsambleDAO();
+                ensambleDao.actualizarEstadoEnsamble(EnsambleSelec);
+    
+                GenerarRegistrosSoporte();
+                vtn.renderPnlReg();
+                System.out.println("Aceptar Final"); 
+            }
         }
         if(e.getActionCommand().equals("VolverEnsamble")){
             vtn.renderEnsamble();
@@ -253,9 +259,15 @@ public class Controlador implements ActionListener{
 
             inventarioDao.insertarInventario(inventario);
         }
+    }
 
-        /*Insertar en la tabla Inventario un registro para cada uno de los elementos 
-        que aparecen en el punto 2.3 con evento = 2 (es decir venta), el precio que se 
-        vendió y como Documento soporte el noFactura. */
+    public void MostrarValor(){
+        Double valFactura = calcularFactura();
+        Double valIva = calcIVA(valFactura);
+        valTotal = valFactura + valIva;
+        vtn.renderTerminar();
+        vtn.getPnlTerminar().getTxfTotalProSer().setText(valFactura.toString());
+        vtn.getPnlTerminar().getTxfIva().setText(valIva.toString());
+        vtn.getPnlTerminar().getTxfTotalFact().setText(valTotal.toString());
     }
 }
