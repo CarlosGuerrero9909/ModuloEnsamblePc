@@ -135,7 +135,7 @@ public class Controlador implements ActionListener{
     
                 GenerarRegistrosSoporte();
                 vtn.renderPnlReg();
-                System.out.println("Aceptar Final"); 
+                vtn.mostrarJoptionPane("Factura generada con exito; Se ha hecho inserción en la base de datos");
             }
         }
         if(e.getActionCommand().equals("VolverEnsamble")){
