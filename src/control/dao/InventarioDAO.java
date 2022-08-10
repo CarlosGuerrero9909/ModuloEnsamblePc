@@ -25,10 +25,10 @@ public class InventarioDAO {
         String consulta = "INSERT INTO inventario VALUES (" +
         inventario.getNoInventario() + ", " +
         inventario.getIdrefefk() + ", '" +
-        inventario.getCodempleadofk() + "'', " +
+        inventario.getCodempleadofk() + "', " +
         inventario.getNfacturafk() + ", '" +
-        inventario.getIdeventofk() + "'', " +
-        inventario.getFechaevento() + ", " +
+        inventario.getIdeventofk() + "', '" +
+        inventario.getFechaevento() + "', " +
         inventario.getValor() + ")";
         try {
             con = ConnectDB.getConnection();
