@@ -52,7 +52,11 @@ public class Ventana extends JFrame{
     public Terminar getPnlTerminar() {
         return pnlTerminar;
     }
-
+    public void renderPnlReg(){
+        this.getContentPane().setVisible(false);
+        this.setContentPane(pnlReg);
+        this.getContentPane().setVisible(true);
+    }
     public void renderConsulta(){
         this.getContentPane().setVisible(false);
         this.setContentPane(pnlCon);

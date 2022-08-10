@@ -77,5 +77,18 @@ public class EnsambleDAO {
     public void setListaEnsamble(ArrayList<Ensamble> listaEnsamble) {
         this.listaEnsamble = listaEnsamble;
     }
-    
+    //actualizar estado de ensamble
+    public void actualizarEstadoEnsamble(int consecc){
+        String consulta = "UPDATE ensamble SET facturado = true WHERE consecc = "+consecc;
+        try {
+            con = ConnectDB.getConnection();
+            st = con.createStatement();
+            st.executeUpdate(consulta); // las consultas van con Query
+            st.close();
+            ConnectDB.dissconect();
+        } catch (Exception ex) {
+            System.out.println("No se pudo realizar la consulta");
+            ex.printStackTrace();
+        }
+    }
 }

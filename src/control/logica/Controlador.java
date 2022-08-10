@@ -5,6 +5,7 @@ import control.dao.DetalleFacturaDAO;
 import control.dao.EmpleadoDAO;
 import control.dao.EnsambleDAO;
 import control.dao.FacturaDAO;
+import control.dao.InventarioDAO;
 import control.dao.ItemEnsambleDao;
 import control.dao.TipoDetalleDAO;
 import models.ClienteVO;
@@ -12,6 +13,7 @@ import models.DetalleFactura;
 import models.EmpleadoVO;
 import models.Ensamble;
 import models.Factura;
+import models.Inventario;
 import models.ItemEnsamble;
 import models.TipoDetalle;
 import vista.Ventana;
@@ -122,6 +124,12 @@ public class Controlador implements ActionListener{
         if(e.getActionCommand().equals("Aceptar")){
             GenerarFactura();
             InsertarDetallesFactura();
+            //actualizar ensamble
+            EnsambleDAO ensambleDao = new EnsambleDAO();
+            ensambleDao.actualizarEstadoEnsamble(EnsambleSelec);
+
+            GenerarRegistrosSoporte();
+            vtn.renderPnlReg();
             System.out.println("Aceptar Final");   
         }
         if(e.getActionCommand().equals("VolverEnsamble")){
@@ -225,5 +233,29 @@ public class Controlador implements ActionListener{
 
             detalleFacturaDao.insertarDetalleFactura(detalleFactura);
         }
+    }
+
+    public void GenerarRegistrosSoporte(){
+        InventarioDAO inventarioDao = new InventarioDAO();
+        int ultimoRegistro = inventarioDao.obtenerUltimoInventario();
+
+        for (ItemEnsamble itemEnsamble : listaEnsamble) {
+            ultimoRegistro++;
+            Inventario inventario = new Inventario();
+
+            inventario.setNoInventario(ultimoRegistro);
+            inventario.setIdrefefk(itemEnsamble.getIdrefefk());
+            inventario.setCodempleadofk(codEmpleado);
+            inventario.setNfacturafk(nuevoIdFactura);
+            inventario.setIdeventofk("2");
+            inventario.setFechaevento(fechaActual());
+            inventario.setValor(itemEnsamble.getValor());
+
+            inventarioDao.insertarInventario(inventario);
+        }
+
+        /*Insertar en la tabla Inventario un registro para cada uno de los elementos 
+        que aparecen en el punto 2.3 con evento = 2 (es decir venta), el precio que se 
+        vendió y como Documento soporte el noFactura. */
     }
 }
