@@ -24,7 +24,7 @@ public class ItemEnsambleDao {
     public ArrayList<ItemEnsamble> getItemEnsamble(int idEnsamble){
         listaItemEnsamble = new ArrayList<ItemEnsamble>();
         String consulta = "select de.itemensamble, i.valor, re.obsref, tc.desctipocarac, "+
-        " rc.valorrefcara, te.destipoelemen " +
+        " rc.valorrefcara, te.destipoelemen, i.noinventario, rc.idrefefk " +
         " from detalleensamble de, inventario i, " +
         " referenciaelemento re, referenciacaracteristica rc, " +
         " tipocaracteristica tc, tipoelemento te " +
@@ -61,6 +61,8 @@ rc.idtipocaracfk = tc.idtipocarac; */
                 itemEnsamble.setDescTipoCarac(rs.getString("desctipocarac"));
                 itemEnsamble.setValorRefCarac(rs.getString("valorrefcara"));
                 itemEnsamble.setDescTipoElemen(rs.getString("destipoelemen"));
+                itemEnsamble.setNoinventario(rs.getInt("noinventario"));
+                itemEnsamble.setIdrefefk(rs.getInt("idrefefk"));
                 listaItemEnsamble.add(itemEnsamble);
             }
             st.close();

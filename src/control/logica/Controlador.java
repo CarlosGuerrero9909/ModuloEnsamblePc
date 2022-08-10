@@ -1,12 +1,14 @@
 package control.logica;
 
 import control.dao.ClienteDAO;
+import control.dao.DetalleFacturaDAO;
 import control.dao.EmpleadoDAO;
 import control.dao.EnsambleDAO;
 import control.dao.FacturaDAO;
 import control.dao.ItemEnsambleDao;
 import control.dao.TipoDetalleDAO;
 import models.ClienteVO;
+import models.DetalleFactura;
 import models.EmpleadoVO;
 import models.Ensamble;
 import models.Factura;
@@ -16,9 +18,7 @@ import vista.Ventana;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 
 
@@ -31,6 +31,8 @@ public class Controlador implements ActionListener{
     private String codEmpleado;
     private Double valTotal;
     private int nuevoIdFactura;
+    private ArrayList<ItemEnsamble> listaEnsamble;
+    private int EnsambleSelec;
 
     public Controlador(){
         this.vtn = new Ventana(this);
@@ -95,9 +97,9 @@ public class Controlador implements ActionListener{
         }
         if(e.getActionCommand().equals("ConsultarEnsamble")){
             try {
-                int EnsambleSelec = ((Integer)vtn.getPnlEnsamble().getCbxEnsamNoFact().getSelectedItem());
+                EnsambleSelec = ((Integer)vtn.getPnlEnsamble().getCbxEnsamNoFact().getSelectedItem());
                 ItemEnsambleDao itemEnsambleDao = new ItemEnsambleDao();
-                ArrayList<ItemEnsamble> listaEnsamble = itemEnsambleDao.getItemEnsamble(EnsambleSelec);
+                listaEnsamble = itemEnsambleDao.getItemEnsamble(EnsambleSelec);
                 vtn.getPnlEnsamble().limpiarTabla();
                 vtn.getPnlEnsamble().setTabla(listaEnsamble);
             } catch (Exception ex) {
@@ -119,7 +121,7 @@ public class Controlador implements ActionListener{
         }
         if(e.getActionCommand().equals("Aceptar")){
             GenerarFactura();
-
+            InsertarDetallesFactura();
             System.out.println("Aceptar Final");   
         }
         if(e.getActionCommand().equals("VolverEnsamble")){
@@ -207,6 +209,21 @@ public class Controlador implements ActionListener{
     }
 
     public void InsertarDetallesFactura(){
-        
+        DetalleFacturaDAO detalleFacturaDao = new DetalleFacturaDAO();
+        int ultimoDetalle = detalleFacturaDao.obtenerUltimoItem();
+        for (ItemEnsamble itemEnsamble : listaEnsamble) {
+            ultimoDetalle++;
+            DetalleFactura detalleFactura = new DetalleFactura();
+            detalleFactura.setItem(ultimoDetalle);
+            detalleFactura.setnFacturaFk(nuevoIdFactura);
+            detalleFactura.setIdTipoDetalleFk("1");
+            detalleFactura.setConseccfk(EnsambleSelec);
+            detalleFactura.setIdrefefk(itemEnsamble.getIdrefefk());
+            detalleFactura.setNoinventariofk(itemEnsamble.getNoinventario());
+            detalleFactura.setCantidad(1);
+            detalleFactura.setPrecio( (int) Math.round(itemEnsamble.getValor()) );
+
+            detalleFacturaDao.insertarDetalleFactura(detalleFactura);
+        }
     }
 }

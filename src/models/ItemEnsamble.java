@@ -7,6 +7,8 @@ public class ItemEnsamble {
     private String DescTipoCarac;
     private String valorRefCarac;
     private String DescTipoElemen;
+    private int noinventario;
+    private int idrefefk;
 
     public ItemEnsamble() {
     }
@@ -19,7 +21,7 @@ public class ItemEnsamble {
         this.valorRefCarac = valorRefCarac;
         DescTipoElemen = descTipoElemen;
     }
-
+    
     public int getIdItemEnsamble() {
         return idItemEnsamble;
     }
@@ -66,5 +68,21 @@ public class ItemEnsamble {
 
     public void setDescTipoElemen(String descTipoElemen) {
         DescTipoElemen = descTipoElemen;
+    }
+
+    public int getNoinventario() {
+        return noinventario;
+    }
+
+    public void setNoinventario(int noinventario) {
+        this.noinventario = noinventario;
+    }
+
+    public int getIdrefefk() {
+        return idrefefk;
+    }
+
+    public void setIdrefefk(int idrefefk) {
+        this.idrefefk = idrefefk;
     }   
 }

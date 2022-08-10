@@ -65,4 +65,24 @@ public class DetalleFacturaDAO {
             ex.printStackTrace();
         }
     }
+
+    //obtener ultimo item
+    public int obtenerUltimoItem(){
+        int ultimoItem = 0;
+        String consulta = "select max(item) as ultimoItem from detallefactura;";
+        try {
+            con = ConnectDB.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(consulta); // las consultas van con Query
+            while (rs.next()) {
+                ultimoItem = rs.getInt("ultimoItem");
+            }
+            st.close();
+            ConnectDB.dissconect();
+        } catch (Exception ex) {
+            System.out.println("No se pudo realizar la consulta");
+            ex.printStackTrace();
+        }
+        return ultimoItem;
+    }
 }
