@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+[recording-2022-08-31-18-09-43.webm](https://user-images.githubusercontent.com/90810310/187800659-996e7e63-438c-494a-9196-a58dd95071b2.webm)
 ## Getting Started
 
 Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
